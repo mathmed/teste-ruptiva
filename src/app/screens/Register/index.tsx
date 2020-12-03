@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState } from 'react';
-import { StatusBar, Text, TouchableOpacity } from 'react-native';
+import { StatusBar, TouchableOpacity } from 'react-native';
 import {
   ButtonText,
   Container,
@@ -10,15 +10,22 @@ import {
 } from './styles';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
+import { connect } from 'react-redux';
 import * as yup from 'yup';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import errorsValidator from '../../utils/errorsValidator';
+import registerAction from '../../core/redux/actions/registerAction';
+
+interface RegisterForm {
+  name: string;
+  document: string;
+}
 
 const RegisterScreen: React.FC = () => {
-  const [typeDocument, setTypeDocument] = useState('cpf');
+  const [typeDocument, setTypeDocument] = useState('individual');
   const formRef = useRef<FormHandles>(null);
-  const handleSubmit = useCallback(async (data: any) => {
+  const handleSubmit = useCallback(async (data: RegisterForm) => {
     try {
       formRef.current?.setErrors({});
       const schema = yup.object().shape({
@@ -26,6 +33,11 @@ const RegisterScreen: React.FC = () => {
         document: yup.string().min(14, 'Documento obrigatório'),
       });
       await schema.validate(data, { abortEarly: false });
+      registerAction({
+        name: data.name,
+        document: data.document,
+        type: typeDocument,
+      });
     } catch (error) {
       const errors = errorsValidator(error);
       formRef.current?.setErrors(errors);
@@ -38,11 +50,13 @@ const RegisterScreen: React.FC = () => {
       <Form ref={formRef} onSubmit={handleSubmit}>
         <TextTypeDocument>DOCUMENTO</TextTypeDocument>
         <DocumentContainer>
-          <TouchableOpacity onPress={() => setTypeDocument('cpf')}>
-            <DocumentText isSelected={typeDocument === 'cpf'}>CPF</DocumentText>
+          <TouchableOpacity onPress={() => setTypeDocument('individual')}>
+            <DocumentText isSelected={typeDocument === 'individual'}>
+              CPF
+            </DocumentText>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setTypeDocument('cnpj')}>
-            <DocumentText isSelected={typeDocument === 'cnpj'}>
+          <TouchableOpacity onPress={() => setTypeDocument('business')}>
+            <DocumentText isSelected={typeDocument === 'business'}>
               CNPJ
             </DocumentText>
           </TouchableOpacity>
@@ -65,4 +79,6 @@ const RegisterScreen: React.FC = () => {
   );
 };
 
-export default RegisterScreen;
+const mapStateToProps = (state: any) => ({});
+
+export default connect(mapStateToProps, { registerAction })(RegisterScreen);
