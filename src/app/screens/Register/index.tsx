@@ -1,6 +1,13 @@
-import React, { useRef, useCallback } from 'react';
-import { StatusBar, Text } from 'react-native';
-import { ButtonText, Container, Title } from './styles';
+import React, { useRef, useCallback, useState } from 'react';
+import { StatusBar, Text, TouchableOpacity } from 'react-native';
+import {
+  ButtonText,
+  Container,
+  DocumentContainer,
+  DocumentText,
+  TextTypeDocument,
+  Title,
+} from './styles';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import * as yup from 'yup';
@@ -9,6 +16,7 @@ import Button from '../../components/Button';
 import errorsValidator from '../../utils/errorsValidator';
 
 const RegisterScreen: React.FC = () => {
+  const [typeDocument, setTypeDocument] = useState('cpf');
   const formRef = useRef<FormHandles>(null);
   const handleSubmit = useCallback(async (data: any) => {
     try {
@@ -28,8 +36,24 @@ const RegisterScreen: React.FC = () => {
       <StatusBar backgroundColor="#ff9000" />
       <Title>Submissão de cadastro</Title>
       <Form ref={formRef} onSubmit={handleSubmit}>
+        <TextTypeDocument>DOCUMENTO</TextTypeDocument>
+        <DocumentContainer>
+          <TouchableOpacity onPress={() => setTypeDocument('cpf')}>
+            <DocumentText isSelected={typeDocument === 'cpf'}>CPF</DocumentText>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setTypeDocument('cnpj')}>
+            <DocumentText isSelected={typeDocument === 'cnpj'}>
+              CNPJ
+            </DocumentText>
+          </TouchableOpacity>
+        </DocumentContainer>
         <Input name="name" placeholder="Nome" />
-        <Input name="document" placeholder="Documento (CPF/CNPJ)" />
+        <Input
+          name="document"
+          placeholder={
+            typeDocument === 'cpf' ? '123.456.789-10' : '12.345.678/91234-56'
+          }
+        />
         <Button
           onPress={() => formRef.current?.submitForm()}
           activeOpacity={0.8}

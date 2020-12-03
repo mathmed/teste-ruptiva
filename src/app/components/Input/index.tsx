@@ -19,19 +19,19 @@ const Input: React.FC<CustomInputProps> = ({ name, ...props }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
 
-  const inpuRef = useRef(null);
+  const inputRef = useRef(null);
 
   useEffect(() => {
     registerField({
       name: fieldName,
-      ref: inpuRef.current,
+      ref: inputRef.current,
       path: 'value',
     });
   }, [fieldName, registerField]);
 
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
-    setIsFilled(!!inpuRef.current);
+    setIsFilled(!!inputRef.current);
   }, []);
 
   const handleInputFocus = useCallback(() => {
@@ -47,7 +47,7 @@ const Input: React.FC<CustomInputProps> = ({ name, ...props }) => {
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           defaultValue={defaultValue}
-          ref={inpuRef}
+          ref={inputRef}
           {...props}
         />
         {error && (
