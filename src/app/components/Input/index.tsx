@@ -1,16 +1,37 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { useField } from '@unform/core';
 import { TextInputProps } from 'react-native';
-import { Container, Fillable } from './styles';
+import {
+  Container,
+  ErrorIconContainer,
+  ErrorMessage,
+  Fillable,
+} from './styles';
+
+import { FontAwesome5 as Icon } from '@expo/vector-icons';
 
 interface CustomInputProps extends TextInputProps {
   name: string;
 }
 
-const Input: React.FC<CustomInputProps> = ({ ...props }) => {
+const Input: React.FC<CustomInputProps> = ({ name, ...props }) => {
+  const { fieldName, defaultValue, error, registerField } = useField(name);
   const [isFocused, setIsFocused] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
+
+  const inpuRef = useRef(null);
+
+  useEffect(() => {
+    registerField({
+      name: fieldName,
+      ref: inpuRef.current,
+      path: 'value',
+    });
+  }, [fieldName, registerField]);
 
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
+    setIsFilled(!!inpuRef.current);
   }, []);
 
   const handleInputFocus = useCallback(() => {
@@ -18,14 +39,25 @@ const Input: React.FC<CustomInputProps> = ({ ...props }) => {
   }, []);
 
   return (
-    <Container isFocused={isFocused}>
-      <Fillable
-        isFocused={isFocused}
-        onFocus={handleInputFocus}
-        onBlur={handleInputBlur}
-        {...props}
-      />
-    </Container>
+    <>
+      <Container isFocused={isFocused} hasError={!!error}>
+        <Fillable
+          isFocused={isFocused}
+          isFilled={isFilled}
+          onFocus={handleInputFocus}
+          onBlur={handleInputBlur}
+          defaultValue={defaultValue}
+          ref={inpuRef}
+          {...props}
+        />
+        {error && (
+          <ErrorIconContainer>
+            <Icon name="info-circle" color="#c53030" size={20} />
+          </ErrorIconContainer>
+        )}
+      </Container>
+      <ErrorMessage>{error}</ErrorMessage>
+    </>
   );
 };
 
