@@ -34,6 +34,7 @@ export const DocumentContainer = styled.View`
   justify-content: space-between;
   max-width: 30%;
   margin-top: 10px;
+  margin-bottom: 10px;
 `;
 
 export const DocumentText = styled.Text<DocumentProps>`

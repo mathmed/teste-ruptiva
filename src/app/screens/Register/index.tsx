@@ -15,17 +15,24 @@ import * as yup from 'yup';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import errorsValidator from '../../utils/errorsValidator';
-import registerAction from '../../core/redux/actions/registerAction';
+import register from '../../core/redux/actions/register';
+import { RegisterAction, RegisterState } from '../../core/redux/store/types';
+import Loading from '../../components/Loading';
 
 interface RegisterForm {
   name: string;
   document: string;
 }
+type RegisterScreenProps = RegisterState & RegisterAction;
 
-const RegisterScreen: React.FC = () => {
+const RegisterScreen: React.FC<RegisterScreenProps> = ({
+  loadingRegisterRequest,
+  register,
+}: RegisterScreenProps) => {
   const [typeDocument, setTypeDocument] = useState('individual');
   const formRef = useRef<FormHandles>(null);
-  const handleSubmit = useCallback(async (data: RegisterForm) => {
+
+  const handleSubmit = useCallback(async (data: RegisterForm, { reset }) => {
     try {
       formRef.current?.setErrors({});
       const schema = yup.object().shape({
@@ -33,11 +40,12 @@ const RegisterScreen: React.FC = () => {
         document: yup.string().min(14, 'Documento obrigatório'),
       });
       await schema.validate(data, { abortEarly: false });
-      registerAction({
+      await register({
         name: data.name,
         document: data.document,
         type: typeDocument,
       });
+      reset();
     } catch (error) {
       const errors = errorsValidator(error);
       formRef.current?.setErrors(errors);
@@ -46,7 +54,7 @@ const RegisterScreen: React.FC = () => {
   return (
     <Container>
       <StatusBar backgroundColor="#ff9000" />
-      <Title>Submissão de cadastro</Title>
+      <Title>Submissão de dados</Title>
       <Form ref={formRef} onSubmit={handleSubmit}>
         <TextTypeDocument>DOCUMENTO</TextTypeDocument>
         <DocumentContainer>
@@ -68,17 +76,23 @@ const RegisterScreen: React.FC = () => {
             typeDocument === 'cpf' ? '123.456.789-10' : '12.345.678/91234-56'
           }
         />
-        <Button
-          onPress={() => formRef.current?.submitForm()}
-          activeOpacity={0.8}
-        >
-          <ButtonText>ENVIAR</ButtonText>
-        </Button>
+        {!loadingRegisterRequest ? (
+          <Button
+            onPress={() => formRef.current?.submitForm()}
+            activeOpacity={0.8}
+          >
+            <ButtonText>ENVIAR</ButtonText>
+          </Button>
+        ) : (
+          <Loading text="Enviando"></Loading>
+        )}
       </Form>
     </Container>
   );
 };
 
-const mapStateToProps = (state: any) => ({});
+const mapStateToProps = ({ register }: { register: RegisterState }) => ({
+  loadingRegisterRequest: register.loadingRegisterRequest,
+});
 
-export default connect(mapStateToProps, { registerAction })(RegisterScreen);
+export default connect(mapStateToProps, { register })(RegisterScreen);
