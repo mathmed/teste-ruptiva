@@ -19,17 +19,21 @@ import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import errorsValidator from '../../utils/errorsValidator';
 import register from '../../core/redux/actions/register';
-import { RegisterState } from '../../core/redux/store/types';
+import { UsersState, RegisterAction } from '../../core/redux/store/types';
 import Loading from '../../components/Loading';
+import md5 from 'md5';
 
 interface RegisterForm {
   name: string;
   document: string;
 }
-type RegisterScreenProps = RegisterState;
+
+type RegisterScreenProps = UsersState & RegisterAction;
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({
   loadingRegisterRequest,
+  loadingGetUsersRequest,
+  users,
   register,
 }: RegisterScreenProps) => {
   const [typeDocument, setTypeDocument] = useState('individual');
@@ -51,6 +55,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
       });
       await schema.validate(data, { abortEarly: false });
       await register({
+        id: md5(data.document),
         name: data.name,
         document: data.document,
         type: typeDocument,
@@ -64,7 +69,12 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   return (
     <Container>
       <StatusBar backgroundColor="#ff9000" />
-      <Modal setVisibleModal={setVisibleModal} visible={visibleModal} />
+      <Modal
+        users={users}
+        loadingGetUsersRequest={loadingGetUsersRequest}
+        setVisibleModal={setVisibleModal}
+        visible={visibleModal}
+      />
       <Title>Submissão de dados</Title>
       <DocumentContainer>
         <TextTypeDocument>DOCUMENTO</TextTypeDocument>
@@ -112,8 +122,10 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   );
 };
 
-const mapStateToProps = ({ register }: { register: RegisterState }) => ({
-  loadingRegisterRequest: register.loadingRegisterRequest,
+const mapStateToProps = ({ users }: { users: UsersState }) => ({
+  loadingRegisterRequest: users.loadingRegisterRequest,
+  loadingGetUsersRequest: users.loadingGetUsersRequest,
+  users: users.users,
 });
 
 export default connect(mapStateToProps, { register })(RegisterScreen);

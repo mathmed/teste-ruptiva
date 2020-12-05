@@ -1,5 +1,4 @@
 import db from '../../services/firebase';
-import { v4 as uuid } from 'uuid';
 import {
   Dispatch,
   UserData,
@@ -7,15 +6,16 @@ import {
   FINISH_REGISTER,
 } from '../store/types';
 
-const register = ({ name, document, type }: UserData) => async (
+const register = ({ name, document, type, id }: UserData) => async (
   dispatch: Dispatch,
 ): Promise<void> => {
   try {
     dispatch({ type: START_REGISTER });
-    await db.collection('submissions').doc(uuid()).set({
+    await db.collection('submissions').doc(id).set({
       name,
       document,
       type,
+      id,
     });
     dispatch({ type: FINISH_REGISTER });
   } catch (error) {

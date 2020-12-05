@@ -60,12 +60,13 @@ const Input: React.FC<CustomInputProps> = ({ name, ...props }) => {
     <>
       <Container isFocused={isFocused} hasError={!!error}>
         <Fillable
+          {...props}
+          ref={inputRef}
           isFocused={isFocused}
           isFilled={isFilled}
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           defaultValue={defaultValue}
-          {...props}
           onChangeText={(value) => {
             if (inputRef.current) {
               inputRef.current.value = value;

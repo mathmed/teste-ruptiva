@@ -28,7 +28,7 @@ export const Container = styled.View<ContainerProps>`
 `;
 
 export const Fillable = styled.TextInput<ContainerProps>`
-  background: transparent;
+  flex: 1;
   padding: 16px;
   font-size: 18px;
   border: 0px transparent;

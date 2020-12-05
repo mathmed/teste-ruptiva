@@ -12,17 +12,25 @@ export interface Dispatch {
 }
 
 export interface UserData {
+  id: string;
   name: string;
   document: string;
   type: string;
 }
 
-export interface RegisterState {
-  loadingRegisterRequest: boolean;
-  register: (data: UserData) => Promise<void>;
-}
 export interface UsersState {
   loadingGetUsersRequest: boolean;
+  loadingRegisterRequest: boolean;
   users: UserData[];
+}
+
+export interface RegisterAction {
+  register: (data: UserData) => Promise<void>;
+}
+
+export interface GetUsersAction {
   getUsers: () => Promise<void>;
+}
+export interface DeleteUsersAction {
+  deleteUser: (uuid: string) => Promise<void>;
 }
