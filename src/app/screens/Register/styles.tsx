@@ -19,7 +19,7 @@ export const Title = styled.Text`
   font-weight: bold;
   text-align: center;
   font-size: 24px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 `;
 
 export const ButtonText = styled.Text`
@@ -30,27 +30,40 @@ export const ButtonText = styled.Text`
 
 export const DocumentContainer = styled.View`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  max-width: 30%;
-  margin-top: 10px;
   margin-bottom: 10px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const DocumentOptionsContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  padding: 6px;
 `;
 
 export const DocumentText = styled.Text<DocumentProps>`
   color: #fff;
   font-weight: bold;
   font-size: 16px;
-
+  margin: 0 10px;
+  padding: 4px;
   ${(props) =>
     props.isSelected &&
     css`
-      color: #ff9000;
-    `}
+      color: #312e38;
+      background: #ff9000;
+      border-radius: 6px;
+    `};
 `;
 
 export const TextTypeDocument = styled.Text`
   color: #fff;
   font-weight: bold;
   font-size: 16px; ;
+`;
+
+export const TextOpenModal = styled(TextTypeDocument)`
+  text-align: center;
+  margin-top: 14px;
+  font-size: 20px;
 `;

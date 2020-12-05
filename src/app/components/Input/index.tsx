@@ -15,17 +15,35 @@ interface CustomInputProps extends TextInputProps {
 }
 
 const Input: React.FC<CustomInputProps> = ({ name, ...props }) => {
+  const inputRef = useRef<CustomInputProps>(null);
+
   const { fieldName, defaultValue, error, registerField } = useField(name);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
 
-  const inputRef = useRef(null);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.value = defaultValue;
+    }
+  }, [defaultValue]);
 
   useEffect(() => {
     registerField({
       name: fieldName,
       ref: inputRef.current,
-      path: 'value',
+      clearValue(ref) {
+        ref.value = '';
+        ref.clear();
+      },
+      setValue(ref, value: string) {
+        ref.setNativeProps({ text: value });
+        if (inputRef.current) {
+          inputRef.current.value = value;
+        }
+      },
+      getValue(ref) {
+        return ref.value;
+      },
     });
   }, [fieldName, registerField]);
 
@@ -47,8 +65,12 @@ const Input: React.FC<CustomInputProps> = ({ name, ...props }) => {
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           defaultValue={defaultValue}
-          ref={inputRef}
           {...props}
+          onChangeText={(value) => {
+            if (inputRef.current) {
+              inputRef.current.value = value;
+            }
+          }}
         />
         {error && (
           <ErrorIconContainer>

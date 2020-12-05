@@ -7,6 +7,8 @@ import {
   DocumentText,
   TextTypeDocument,
   Title,
+  DocumentOptionsContainer,
+  TextOpenModal,
 } from './styles';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
@@ -14,6 +16,7 @@ import { connect } from 'react-redux';
 import * as yup from 'yup';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import Modal from '../../components/Modal';
 import errorsValidator from '../../utils/errorsValidator';
 import register from '../../core/redux/actions/register';
 import { RegisterAction, RegisterState } from '../../core/redux/store/types';
@@ -30,14 +33,22 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   register,
 }: RegisterScreenProps) => {
   const [typeDocument, setTypeDocument] = useState('individual');
+  const [visibleModal, setVisibleModal] = useState(false);
   const formRef = useRef<FormHandles>(null);
 
   const handleSubmit = useCallback(async (data: RegisterForm, { reset }) => {
     try {
+      console.log(data);
       formRef.current?.setErrors({});
       const schema = yup.object().shape({
-        name: yup.string().min(6, 'Nome obrigatório'),
-        document: yup.string().min(14, 'Documento obrigatório'),
+        name: yup
+          .string()
+          .required('Campo obrigatório')
+          .min(6, 'Campo obrigatório'),
+        document: yup
+          .string()
+          .required('Documento obrigatório')
+          .min(14, 'Documento obrigatório'),
       });
       await schema.validate(data, { abortEarly: false });
       await register({
@@ -54,10 +65,14 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   return (
     <Container>
       <StatusBar backgroundColor="#ff9000" />
+      <Modal setVisibleModal={setVisibleModal} visible={visibleModal}>
+        <Title>eae</Title>
+      </Modal>
+
       <Title>Submissão de dados</Title>
-      <Form ref={formRef} onSubmit={handleSubmit}>
+      <DocumentContainer>
         <TextTypeDocument>DOCUMENTO</TextTypeDocument>
-        <DocumentContainer>
+        <DocumentOptionsContainer>
           <TouchableOpacity onPress={() => setTypeDocument('individual')}>
             <DocumentText isSelected={typeDocument === 'individual'}>
               CPF
@@ -68,12 +83,19 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
               CNPJ
             </DocumentText>
           </TouchableOpacity>
-        </DocumentContainer>
-        <Input name="name" placeholder="Nome" />
+        </DocumentOptionsContainer>
+      </DocumentContainer>
+      <Form ref={formRef} onSubmit={handleSubmit}>
+        <Input
+          name="name"
+          placeholder={typeDocument === 'individual' ? 'Nome' : 'Razão Social'}
+        />
         <Input
           name="document"
           placeholder={
-            typeDocument === 'cpf' ? '123.456.789-10' : '12.345.678/91234-56'
+            typeDocument === 'individual'
+              ? '123.456.789-10'
+              : '12.345.678/91234-56'
           }
         />
         {!loadingRegisterRequest ? (
@@ -87,6 +109,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
           <Loading text="Enviando"></Loading>
         )}
       </Form>
+      <TouchableOpacity onPress={() => setVisibleModal(true)}>
+        <TextOpenModal>Ver cadastros</TextOpenModal>
+      </TouchableOpacity>
     </Container>
   );
 };

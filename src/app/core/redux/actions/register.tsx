@@ -10,14 +10,17 @@ import {
 const register = ({ name, document, type }: RegisterActionData) => async (
   dispatch: Dispatch,
 ): Promise<void> => {
-  dispatch({ type: START_REGISTER });
-  await db.collection('submissions').doc(uuid()).set({
-    name,
-    document,
-    type,
-  });
-
-  dispatch({ type: FINISH_REGISTER });
+  try {
+    dispatch({ type: START_REGISTER });
+    await db.collection('submissions').doc(uuid()).set({
+      name,
+      document,
+      type,
+    });
+    dispatch({ type: FINISH_REGISTER });
+  } catch (error) {
+    dispatch({ type: FINISH_REGISTER });
+  }
 };
 
 export default register;
