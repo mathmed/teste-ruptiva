@@ -2,12 +2,12 @@ import db from '../../services/firebase';
 import { v4 as uuid } from 'uuid';
 import {
   Dispatch,
-  RegisterActionData,
+  UserData,
   START_REGISTER,
   FINISH_REGISTER,
 } from '../store/types';
 
-const register = ({ name, document, type }: RegisterActionData) => async (
+const register = ({ name, document, type }: UserData) => async (
   dispatch: Dispatch,
 ): Promise<void> => {
   try {

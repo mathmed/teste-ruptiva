@@ -9,18 +9,9 @@ import {
 } from './styles';
 
 import { FontAwesome5 as Icon } from '@expo/vector-icons';
+import { UserData } from '../../core/redux/store/types';
 
-interface UserInfoProps {
-  name: string;
-  document: string;
-  type: string;
-}
-
-const UserInfo: React.FC<UserInfoProps> = ({
-  name,
-  document,
-  type,
-}: UserInfoProps) => (
+const UserInfo: React.FC<UserData> = ({ name, document, type }: UserData) => (
   <Container>
     <UserInfoContent>
       <Name>{name}</Name>

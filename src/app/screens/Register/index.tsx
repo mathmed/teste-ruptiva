@@ -19,14 +19,14 @@ import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import errorsValidator from '../../utils/errorsValidator';
 import register from '../../core/redux/actions/register';
-import { RegisterAction, RegisterState } from '../../core/redux/store/types';
+import { RegisterState } from '../../core/redux/store/types';
 import Loading from '../../components/Loading';
 
 interface RegisterForm {
   name: string;
   document: string;
 }
-type RegisterScreenProps = RegisterState & RegisterAction;
+type RegisterScreenProps = RegisterState;
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({
   loadingRegisterRequest,

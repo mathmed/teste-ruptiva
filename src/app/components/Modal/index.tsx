@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { FlatList, ModalProps, RefreshControl } from 'react-native';
 import { connect } from 'react-redux';
 import getUsers from '../../core/redux/actions/getUsers';
-import { GetUsersAction, UsersState } from '../../core/redux/store/types';
+import { UsersState } from '../../core/redux/store/types';
 import Button from '../Button';
 import UserInfo from '../UserInfo';
 import {
@@ -14,7 +14,7 @@ import {
   TextCloseModal,
 } from './styles';
 
-interface CustomModalProps extends ModalProps, GetUsersAction, UsersState {
+interface CustomModalProps extends ModalProps, UsersState {
   setVisibleModal: (visible: boolean) => void;
 }
 

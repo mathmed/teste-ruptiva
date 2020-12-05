@@ -11,30 +11,18 @@ export interface Dispatch {
   ({ type, payload }: DispatchParams): any;
 }
 
-export interface RegisterActionData {
-  name: string;
-  document: string;
-  type: string;
-}
-export interface RegisterState {
-  loadingRegisterRequest: boolean;
-}
-
-export interface RegisterAction {
-  register: (data: RegisterActionData) => Promise<void>;
-}
-
 export interface UserData {
   name: string;
   document: string;
   type: string;
 }
 
+export interface RegisterState {
+  loadingRegisterRequest: boolean;
+  register: (data: UserData) => Promise<void>;
+}
 export interface UsersState {
   loadingGetUsersRequest: boolean;
   users: UserData[];
-}
-
-export interface GetUsersAction {
   getUsers: () => Promise<void>;
 }
