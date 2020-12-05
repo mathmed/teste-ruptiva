@@ -9,7 +9,7 @@ export const Title = styled.Text`
   font-weight: bold;
   text-align: center;
   font-size: 24px;
-  margin-top: 40px;
+  margin-top: 20px;
 `;
 
 export const TextCloseModal = styled.Text`
@@ -25,7 +25,8 @@ export const Content = styled.View`
 `;
 
 export const DataContent = styled.View`
-  margin: 40px;
+  margin: 20px;
+  flex: 1;
 `;
 export const CloseModalContent = styled.View`
   width: 100%;

@@ -38,7 +38,6 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
 
   const handleSubmit = useCallback(async (data: RegisterForm, { reset }) => {
     try {
-      console.log(data);
       formRef.current?.setErrors({});
       const schema = yup.object().shape({
         name: yup
@@ -65,10 +64,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   return (
     <Container>
       <StatusBar backgroundColor="#ff9000" />
-      <Modal setVisibleModal={setVisibleModal} visible={visibleModal}>
-        <Title>eae</Title>
-      </Modal>
-
+      <Modal setVisibleModal={setVisibleModal} visible={visibleModal} />
       <Title>Submissão de dados</Title>
       <DocumentContainer>
         <TextTypeDocument>DOCUMENTO</TextTypeDocument>
