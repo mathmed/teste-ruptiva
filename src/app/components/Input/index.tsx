@@ -12,14 +12,27 @@ import { FontAwesome5 as Icon } from '@expo/vector-icons';
 
 interface CustomInputProps extends TextInputProps {
   name: string;
+  rawValue?: string;
 }
 
-const Input: React.FC<CustomInputProps> = ({ name, ...props }) => {
+const Input: React.FC<CustomInputProps> = ({
+  name,
+  onChangeText,
+  rawValue,
+  ...props
+}) => {
   const inputRef = useRef<CustomInputProps>(null);
-
   const { fieldName, defaultValue, error, registerField } = useField(name);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
+
+  const handleOnChange = useCallback(
+    (text) => {
+      if (inputRef.current) inputRef.current.value = text;
+      if (onChangeText) onChangeText(text);
+    },
+    [onChangeText],
+  );
 
   useEffect(() => {
     if (inputRef.current) {
@@ -32,20 +45,15 @@ const Input: React.FC<CustomInputProps> = ({ name, ...props }) => {
       name: fieldName,
       ref: inputRef.current,
       clearValue(ref) {
+        handleOnChange('');
         ref.value = '';
         ref.clear();
       },
-      setValue(ref, value: string) {
-        ref.setNativeProps({ text: value });
-        if (inputRef.current) {
-          inputRef.current.value = value;
-        }
-      },
       getValue(ref) {
-        return ref.value;
+        return rawValue || ref.value;
       },
     });
-  }, [fieldName, registerField]);
+  }, [fieldName, rawValue, registerField]);
 
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
@@ -60,18 +68,14 @@ const Input: React.FC<CustomInputProps> = ({ name, ...props }) => {
     <>
       <Container isFocused={isFocused} hasError={!!error}>
         <Fillable
-          {...props}
           ref={inputRef}
           isFocused={isFocused}
           isFilled={isFilled}
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           defaultValue={defaultValue}
-          onChangeText={(value) => {
-            if (inputRef.current) {
-              inputRef.current.value = value;
-            }
-          }}
+          onChangeText={handleOnChange}
+          {...props}
         />
         {error && (
           <ErrorIconContainer>

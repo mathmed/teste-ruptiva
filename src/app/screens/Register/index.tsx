@@ -15,6 +15,7 @@ import { FormHandles } from '@unform/core';
 import { connect } from 'react-redux';
 import * as yup from 'yup';
 import Input from '../../components/Input';
+import InputMasked from '../../components/Input/masked';
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
 import errorsValidator from '../../utils/errorsValidator';
@@ -40,6 +41,11 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   const [visibleModal, setVisibleModal] = useState(false);
   const formRef = useRef<FormHandles>(null);
 
+  const handleChangeTypeDocument = useCallback((typeDocument: string) => {
+    setTypeDocument(typeDocument);
+    formRef.current?.reset();
+  }, []);
+
   const handleSubmit = useCallback(async (data: RegisterForm, { reset }) => {
     try {
       formRef.current?.setErrors({});
@@ -47,11 +53,11 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
         name: yup
           .string()
           .required('Campo obrigatório')
-          .min(6, 'Campo obrigatório'),
+          .min(4, 'Campo obrigatório'),
         document: yup
           .string()
           .required('Documento obrigatório')
-          .min(14, 'Documento obrigatório'),
+          .min(typeDocument === 'cpf' ? 11 : 14, 'Documento obrigatório'),
       });
       await schema.validate(data, { abortEarly: false });
       await register({
@@ -79,12 +85,16 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
       <DocumentContainer>
         <TextTypeDocument>DOCUMENTO</TextTypeDocument>
         <DocumentOptionsContainer>
-          <TouchableOpacity onPress={() => setTypeDocument('individual')}>
+          <TouchableOpacity
+            onPress={() => handleChangeTypeDocument('individual')}
+          >
             <DocumentText isSelected={typeDocument === 'individual'}>
               CPF
             </DocumentText>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setTypeDocument('business')}>
+          <TouchableOpacity
+            onPress={() => handleChangeTypeDocument('business')}
+          >
             <DocumentText isSelected={typeDocument === 'business'}>
               CNPJ
             </DocumentText>
@@ -96,7 +106,8 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
           name="name"
           placeholder={typeDocument === 'individual' ? 'Nome' : 'Razão Social'}
         />
-        <Input
+        <InputMasked
+          type={typeDocument === 'individual' ? 'cpf' : 'cnpj'}
           name="document"
           placeholder={
             typeDocument === 'individual'
