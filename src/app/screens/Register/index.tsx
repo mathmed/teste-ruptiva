@@ -17,7 +17,7 @@ import * as yup from 'yup';
 import Input from '../../components/Input';
 import InputMasked from '../../components/Input/masked';
 import Button from '../../components/Button';
-import Modal from '../../components/Modal';
+import UsersInfo from '../UsersInfo';
 import errorsValidator from '../../utils/errorsValidator';
 import register from '../../core/redux/actions/register';
 import { UsersState, RegisterAction } from '../../core/redux/store/types';
@@ -78,7 +78,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   return (
     <Container>
       <StatusBar backgroundColor="#ff9000" />
-      <Modal
+      <UsersInfo
         users={users}
         loadingGetUsersRequest={loadingGetUsersRequest}
         setVisibleModal={setVisibleModal}
@@ -86,7 +86,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
       />
       <Title>Submissão de dados</Title>
       <DocumentContainer>
-        <TextTypeDocument>DOCUMENTO</TextTypeDocument>
+        <TextTypeDocument>TIPO DE DOCUMENTO</TextTypeDocument>
         <DocumentOptionsContainer>
           <TouchableOpacity
             onPress={() => handleChangeTypeDocument('individual')}

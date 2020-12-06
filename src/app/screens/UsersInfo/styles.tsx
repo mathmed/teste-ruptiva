@@ -9,7 +9,7 @@ export const Title = styled.Text`
   font-weight: bold;
   text-align: center;
   font-size: 24px;
-  margin-top: 20px;
+  padding-top: 10%;
 `;
 
 export const TextCloseModal = styled.Text`

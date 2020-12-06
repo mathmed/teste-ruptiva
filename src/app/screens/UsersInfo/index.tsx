@@ -9,7 +9,7 @@ import {
   DeleteUsersAction,
   UserData,
 } from '../../core/redux/store/types';
-import Button from '../Button';
+import Button from '../../components/Button';
 import {
   Container,
   Content,
@@ -35,7 +35,7 @@ interface CustomModalProps
   setVisibleModal: (visible: boolean) => void;
 }
 
-const Modal: React.FC<CustomModalProps> = ({
+const UsersInfo: React.FC<CustomModalProps> = ({
   loadingGetUsersRequest,
   users,
   setVisibleModal,
@@ -134,4 +134,4 @@ const Modal: React.FC<CustomModalProps> = ({
   );
 };
 
-export default connect(() => ({}), { getUsers, deleteUser })(Modal);
+export default connect(() => ({}), { getUsers, deleteUser })(UsersInfo);

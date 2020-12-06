@@ -6,7 +6,7 @@ export const Container = styled.TouchableOpacity`
   height: 56px;
   padding: 0 16px;
   width: 100%;
-  margin-top: 50px;
+  margin-top: 10px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -9,7 +9,7 @@ export const Container = styled.SafeAreaView`
   flex: 1;
   padding: 0 20px;
   display: flex;
-  padding-top: 20%;
+  padding-top: 10%;
 `;
 
 export const Title = styled.Text`
@@ -46,14 +46,15 @@ export const DocumentText = styled.Text<DocumentProps>`
   font-weight: bold;
   font-size: 16px;
   margin: 0 10px;
-  padding: 4px;
+  padding: 8px;
+  border-radius: 4px;
+  background: #312e38;
   ${(props) =>
-    props.isSelected &&
-    css`
-      color: #312e38;
-      background: #ff9000;
-      border-radius: 6px;
-    `};
+    props.isSelected
+      ? css`
+          background: #ff9000;
+        `
+      : null}
 `;
 
 export const TextTypeDocument = styled.Text`
