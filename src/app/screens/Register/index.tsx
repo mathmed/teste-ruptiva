@@ -57,7 +57,10 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
         document: yup
           .string()
           .required('Documento obrigatório')
-          .min(typeDocument === 'cpf' ? 11 : 14, 'Documento obrigatório'),
+          .min(
+            typeDocument === 'individual' ? 11 : 14,
+            'Documento obrigatório',
+          ),
       });
       await schema.validate(data, { abortEarly: false });
       await register({

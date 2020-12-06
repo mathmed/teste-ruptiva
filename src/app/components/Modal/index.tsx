@@ -25,6 +25,7 @@ import {
 } from './styles';
 import { FontAwesome5 as Icon } from '@expo/vector-icons';
 import { ConfirmDialog } from 'react-native-simple-dialogs';
+import documentMask from '../../utils/documentMask';
 
 interface CustomModalProps
   extends ModalProps,
@@ -59,7 +60,7 @@ const Modal: React.FC<CustomModalProps> = ({
       <ContainerUserInfo>
         <UserInfoContent>
           <Name>{name}</Name>
-          <Text>{document}</Text>
+          <Text>{documentMask(document, type)}</Text>
           <DocumentType>{type === 'individual' ? 'CPF' : 'CNPJ'}</DocumentType>
         </UserInfoContent>
         <DeleteContent onPress={() => handleDeleteUser(id)}>
