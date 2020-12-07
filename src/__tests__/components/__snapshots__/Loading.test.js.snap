@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[COMPONENTS] Loading Should render corretly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "display": "flex",
+        "justifyContent": "center",
+        "marginTop": 50,
+      },
+    ]
+  }
+>
+  <View
+    style={
+      Object {
+        "transform": Array [
+          Object {
+            "rotate": "0deg",
+          },
+        ],
+      }
+    }
+  >
+    <Text />
+  </View>
+  <Text
+    style={
+      Array [
+        Object {
+          "color": "#ff9000",
+          "fontSize": 16,
+          "fontWeight": "bold",
+          "marginTop": 16,
+        },
+      ]
+    }
+  >
+    Carregando
+  </Text>
+</View>
+`;

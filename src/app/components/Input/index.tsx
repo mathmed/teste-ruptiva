@@ -13,6 +13,7 @@ import { FontAwesome5 as Icon } from '@expo/vector-icons';
 interface CustomInputProps extends TextInputProps {
   name: string;
   rawValue?: string;
+  ref?: any;
 }
 
 const Input: React.FC<CustomInputProps> = ({
@@ -21,7 +22,7 @@ const Input: React.FC<CustomInputProps> = ({
   rawValue,
   ...props
 }) => {
-  const inputRef = useRef<CustomInputProps>(null);
+  const inputRef = useRef<TextInputProps>(null);
   const { fieldName, defaultValue, error, registerField } = useField(name);
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);

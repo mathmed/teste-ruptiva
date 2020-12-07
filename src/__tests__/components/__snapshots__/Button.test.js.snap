@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`[COMPONENTS] Button Should render corretly 1`] = `
+<View
+  accessible={true}
+  focusable={false}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#ff9000",
+      "borderRadius": 10,
+      "display": "flex",
+      "height": 56,
+      "justifyContent": "center",
+      "marginTop": 10,
+      "opacity": 1,
+      "paddingBottom": 0,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "paddingTop": 0,
+      "width": "100%",
+    }
+  }
+/>
+`;
